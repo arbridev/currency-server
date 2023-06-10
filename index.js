@@ -3,7 +3,10 @@ const app = express()
 const port = 3000
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  const Currencies = require('./controllers/currencies-controller')
+  const currencies = new Currencies()
+  const json = currencies.getCurrencies()
+  res.send(json)
 })
 
 app.listen(port, () => {
