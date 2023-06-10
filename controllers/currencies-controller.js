@@ -1,8 +1,10 @@
 class Currencies {
-    constructor() {}
+    constructor(filepath = './resources/latest.json') {
+        this.filepath = filepath
+    }
     getCurrencies(params) {
         const fs = require('fs');
-        const text = fs.readFileSync('./resources/example.json').toString()
+        const text = fs.readFileSync(this.filepath).toString()
         const json = JSON.parse(text)
         return json
     }
