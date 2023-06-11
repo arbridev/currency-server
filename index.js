@@ -1,10 +1,19 @@
+// - Configuration
+
 const express = require('express')
 const app = express()
-const port = 3000
+const cors = require("cors")
+const port = process.env.PORT || 3000
 const cron = require('node-cron')
 const crontabline = "0 0/6 * * *"
 // const crontabline = "58 5,11,17,23 * * *"
 // const crontabline = "*/15 * * * * *"
+
+// - Middleware
+
+app.use(cors())
+
+// - Cron jobs
 
 cron.schedule(crontabline, async () => {
   console.log("---------------------")
@@ -23,12 +32,16 @@ cron.schedule(crontabline, async () => {
   fs.writeFileSync('./resources/latest.json', JSON.stringify(json))
 })
 
+// - Routes
+
 app.get('/', async (req, res) => {
   const Currencies = require('./controllers/currencies-controller')
   const currencies = new Currencies()
   const json = currencies.getCurrencies()
   res.send(json)
 })
+
+// - Start
 
 app.listen(port, () => {
   console.log(`Currency app listening on port ${port}`)
