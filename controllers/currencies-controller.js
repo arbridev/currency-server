@@ -9,7 +9,8 @@ class Currencies {
 
   getCurrencies(params) {
     const text = this.fs.readFileSync(this.filepath).toString()
-    const json = JSON.parse(text)
+    let json = JSON.parse(text)
+    this.#addCalculatedCurrencies(json)
     return json
   }
 
@@ -24,6 +25,13 @@ class Currencies {
     const json = response.data
     console.log(json)
     this.fs.writeFileSync(`./resources/${constants.fileName.latest}.json`, JSON.stringify(json))
+  }
+
+  #addCalculatedCurrencies(currenciesJson) {
+    currenciesJson.data.VES = {
+      code: "VES",
+      value: currenciesJson.data.VEF.value / 100000
+    }
   }
 }
 
